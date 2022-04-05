@@ -45,10 +45,10 @@ jobs:
       run: |
             Push-Location tesseract
             cmake . -B build -DCMAKE_BUILD_TYPE=Release -DSW_BUILD=OFF -DOPENMP_BUILD=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_SHARED_LIBS=ON "-DCMAKE_TOOLCHAIN_FILE=..\vcpkg\scripts\buildsystems\vcpkg.cmake"
-            cmake --build build --config Release
+            cmake --build build --config Release -j 3
 
     - name: Upload build artifact 
       uses: actions/upload-artifact@v2
       with:
         name: win-x64
-        path: '${{ env.GITHUB_WORKSPACE }}\tesseract\build\bin\Release\'
+        path: '${{ github.workspace }}\tesseract\build\bin\Release\'
