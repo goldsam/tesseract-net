@@ -19,7 +19,7 @@ jobs:
     - name: Resolve tesseract version
       run: |
         $Version = Get-Content -Path VERSION
-        Add-Content -Path $GITHUB_ENV -Value "VERISON=$Version"
+        Add-Content -Path $env:GITHUB_ENV -Value "VERISON=$Version"
         Write-Host "Version: $Version"
     
     - name: Download tesseract source  
