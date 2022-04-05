@@ -15,9 +15,9 @@ jobs:
     steps:
     - name: Resolve tesseract version
       run: |
-        VER=$(cat VERSION)
-        echo "VERSION=$VER" >> $GITHUB_ENV
-        
+        $Version = Get-Content -Path VERSION
+        Add-Content -Path $GITHUB_ENV -Value "VERISON=$Version"
+        Write-Host "Version: $Version"
     
     - name: Download tesseract source  
       run: |
