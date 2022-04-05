@@ -19,14 +19,14 @@ jobs:
     - name: Resolve tesseract version
       run: |
         $Version = Get-Content -Path VERSION
-        Add-Content -Path $env:GITHUB_ENV -Value "VERISON=$Version"
-        Write-Host "Version: $Version"
+        Add-Content -Path $env:GITHUB_ENV -Value "TESSERACT_VERISON=$Version"
+        Write-Host "Tesseract Version: $Version"
     
     - name: Download tesseract source  
       run: |
-           curl -SL --output tesseract.tar.gz https://github.com/tesseract-ocr/tesseract/archive/refs/tags/${{ env.VERSION }}.tar.gz
+           curl -SL --output tesseract.tar.gz "https://github.com/tesseract-ocr/tesseract/archive/refs/tags/$($env:TESSERACT_VERISON).tar.gz"
            mkdir -p /tesseract
-           tar -xf tesseract.tar.gz --strip-components=1 -C /tesseract tesseract-${{ env.VERSION }}
+           tar -xf tesseract.tar.gz --strip-components=1 -C /tesseract "tesseract-$($env:TESSERACT_VERISON)"
            rm tesseract.tar.gz
     
       
