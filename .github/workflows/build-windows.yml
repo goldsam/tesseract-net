@@ -36,6 +36,12 @@ jobs:
     - name: Download tesseract source  
       run: |
             git clone --branch $env:TESSERACT_VERISON "https://github.com/tesseract-ocr/tesseract"
+            
+    - name: Build leptonica
+            ../vcpkg/vcpkg install leptonica:x64-windows
+
+    - name: Build tesseract  
+      run: |
             Push-Location tesseract
             cmake . -B build -DCMAKE_BUILD_TYPE=Release -DSW_BUILD=OFF -DOPENMP_BUILD=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_SHARED_LIBS=ON "-DCMAKE_TOOLCHAIN_FILE=..\vcpkg\scripts\buildsystems\vcpkg.cmake"
             cmake --build build --config Release
