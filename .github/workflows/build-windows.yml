@@ -38,7 +38,8 @@ jobs:
             git clone --branch $env:TESSERACT_VERISON "https://github.com/tesseract-ocr/tesseract"
             
     - name: Build leptonica
-            ../vcpkg/vcpkg install leptonica:x64-windows
+      run: |
+            vcpkg/vcpkg install leptonica:x64-windows
 
     - name: Build tesseract  
       run: |
