@@ -21,15 +21,25 @@ jobs:
         $Version = Get-Content -Path VERSION
         Add-Content -Path $env:GITHUB_ENV -Value "TESSERACT_VERISON=$Version"
         Write-Host "Tesseract Version: $Version"
-    
+                      
+    - name: Visual Studio Setup
+      shell: cmd
+      run: |
+            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+
+    - name: Install vcpkg (Windows)
+      run: |
+            git clone https://github.com/microsoft/vcpkg
+            vcpkg/bootstrap-vcpkg.bat
+            vcpkg/vcpkg integrate install
+
     - name: Download tesseract source  
       run: |
-           curl -SL --output tesseract.tar.gz "https://github.com/tesseract-ocr/tesseract/archive/refs/tags/$($env:TESSERACT_VERISON).tar.gz"
-           mkdir -p /tesseract
-           tar -xf tesseract.tar.gz --strip-components=1 -C /tesseract "tesseract-$($env:TESSERACT_VERISON)"
-           rm tesseract.tar.gz
-    
-      
+            git clone --branch $env:TESSERACT_VERISON "https://github.com/tesseract-ocr/tesseract"
+            Push-Location tesseract
+            cmake . -B build -DCMAKE_BUILD_TYPE=Release -DSW_BUILD=OFF -DOPENMP_BUILD=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_SHARED_LIBS=ON "-DCMAKE_TOOLCHAIN_FILE=..\vcpkg\scripts\buildsystems\vcpkg.cmake"
+            cmake --build build --config Release
+            
       # uses: aochmann/actions-download-artifact@1.0.0
       # with:
         
@@ -55,15 +65,10 @@ jobs:
       #        vcpkg/vcpkg install tesseract:x64-linux
       #   if: runner.os == 'Linux'
 
-      # - name: Visual Studio Setup (Windows)
-      #   shell: cmd
-      #   run: |
-      #        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-      #   if: runner.os == 'Windows'
-      # # - name: Checkout Tesseract Source (--head from main branch)
-      # #   uses: actions/checkout@v2
-      # #   with:
-      # #     submodules: recursive
+      # - name: Checkout Tesseract Source (--head from main branch)
+      #   uses: actions/checkout@v2
+      #   with:
+      #     submodules: recursive
 
       # - name: Visual Studio Setup
       #   shell: cmd
