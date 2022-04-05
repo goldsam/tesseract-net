@@ -49,7 +49,7 @@ jobs:
 
     - name: Zip build artifact
       run: |
-            zip win-x64.zip build/bin/Release -r
+            Compress-Archive -Path "build/bin/Release" -DestinationPath "win-x64.zip"
 
     - name: Upload build artifact 
       uses: actions/upload-artifact@v2
